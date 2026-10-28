@@ -1,0 +1,238 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const now = new Date();
+now.setHours(0, 0, 0, 0);
+
+const eventos = (await getCollection('panoramas'))
+	.filter((e) => {
+		const fin = e.data.fechaFin ?? e.data.fecha;
+		return fin.valueOf() >= now.valueOf();
+	})
+	.sort((a, b) => a.data.fecha.valueOf() - b.data.fecha.valueOf());
+
+const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead title={`Panoramas — ${SITE_TITLE}`} description="Charlas, retiros, conciertos, películas y más, para conocer más de Dios en distintos lugares." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-header">
+				<h1>Panoramas</h1>
+				<p class="page-subtitle">Charlas, retiros, conciertos, películas y más, para conocer más de Dios en distintos lugares.</p>
+			</div>
+
+			{tiposPresentes.length > 1 && (
+				<div class="filtros" role="group" aria-label="Filtrar por tipo de panorama">
+					<button class="filtro activo" data-filtro="todos" type="button">Todos</button>
+					{tiposPresentes.map((tipo) => (
+						<button class="filtro" data-filtro={tipo} type="button">{tipo}</button>
+					))}
+				</div>
+			)}
+
+			{eventos.length === 0 ? (
+				<div class="vacio">
+					<p>No hay panoramas próximos por ahora. Vuelve pronto — siempre estamos sumando.</p>
+				</div>
+			) : (
+				<div class="eventos-grid" id="eventos-grid">
+					{eventos.map((evento) => (
+						<a href={`/panoramas/${evento.id}/`} class="evento-card" data-tipo={evento.data.tipo}>
+							{evento.data.heroImage && (
+								<div class="evento-imagen">
+									<Image width={400} height={300} src={evento.data.heroImage} alt="" />
+								</div>
+							)}
+							<div class="evento-info">
+								<span class="tipo">{evento.data.tipo}</span>
+								<h2>{evento.data.title}</h2>
+								<div class="meta">
+									<span class="fecha">
+										<FormattedDate date={evento.data.fecha} />
+										{evento.data.hora && <span class="hora"> · {evento.data.hora}</span>}
+									</span>
+									<span class="lugar">{evento.data.lugar}</span>
+								</div>
+								<p class="descripcion">{evento.data.description}</p>
+							</div>
+						</a>
+					))}
+				</div>
+			)}
+		</main>
+		<Footer />
+
+		<script>
+			const botones = document.querySelectorAll<HTMLButtonElement>('.filtro');
+			const cards = document.querySelectorAll<HTMLAnchorElement>('.evento-card');
+
+			botones.forEach((btn) => {
+				btn.addEventListener('click', () => {
+					botones.forEach((b) => b.classList.remove('activo'));
+					btn.classList.add('activo');
+					const filtro = btn.dataset.filtro;
+					cards.forEach((card) => {
+						if (filtro === 'todos' || card.dataset.tipo === filtro) {
+							card.removeAttribute('hidden');
+						} else {
+							card.setAttribute('hidden', '');
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
+
+<style>
+	.page-header {
+		margin-bottom: 2.5em;
+	}
+	h1 {
+		font-size: 2.5em;
+		margin-bottom: 0.3em;
+	}
+	.page-subtitle {
+		color: rgb(var(--gray));
+		font-size: 1em;
+		margin: 0;
+		max-width: 640px;
+	}
+
+	.filtros {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6em;
+		margin-bottom: 2.5em;
+		padding-bottom: 1.5em;
+		border-bottom: 1px solid rgba(var(--gray), 0.15);
+	}
+	.filtro {
+		background: transparent;
+		border: 1px solid rgba(var(--gray), 0.3);
+		color: rgb(var(--gray-dark));
+		padding: 0.45em 1.1em;
+		border-radius: 100px;
+		font-family: var(--font-body);
+		font-size: 0.85em;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+	.filtro:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.filtro.activo {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--color-paper);
+	}
+
+	.eventos-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2.5em;
+	}
+	.evento-card {
+		text-decoration: none;
+		color: inherit;
+		display: flex;
+		flex-direction: column;
+		transition: transform 0.2s ease;
+		min-width: 0;
+	}
+	.evento-card:hover {
+		transform: translateY(-4px);
+	}
+	.evento-imagen {
+		margin-bottom: 1em;
+	}
+	.evento-card :global(img) {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 10px;
+	}
+	.tipo {
+		font-family: var(--font-body);
+		font-size: 0.75em;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--color-mustard);
+		margin-bottom: 0.6em;
+	}
+	.evento-info h2 {
+		font-family: var(--font-body);
+		font-weight: 600;
+		font-size: 1.15em;
+		margin: 0 0 0.5em;
+		line-height: 1.35;
+		letter-spacing: -0.005em;
+	}
+	.evento-card:hover h2 {
+		color: var(--accent);
+	}
+	.meta {
+		font-family: var(--font-body);
+		font-size: 0.85em;
+		color: var(--color-ink-blue);
+		line-height: 1.5;
+		margin-bottom: 0.6em;
+		display: flex;
+		flex-direction: column;
+		gap: 0.15em;
+	}
+	.meta .hora {
+		color: rgb(var(--gray));
+	}
+	.meta .lugar {
+		color: rgb(var(--gray-dark));
+		font-size: 0.95em;
+	}
+	.descripcion {
+		font-size: 0.85em;
+		color: rgb(var(--black));
+		margin: 0;
+		line-height: 1.5;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.vacio {
+		padding: 3em 0;
+		text-align: center;
+		color: rgb(var(--gray));
+	}
+
+	@media (max-width: 1024px) {
+		.eventos-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 2em;
+		}
+		.eventos-grid {
+			grid-template-columns: 1fr;
+			gap: 2em;
+		}
+		.filtros {
+			margin-bottom: 2em;
+		}
+	}
+</style>
