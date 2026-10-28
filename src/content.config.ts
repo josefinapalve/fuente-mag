@@ -17,4 +17,21 @@ const blog = defineCollection({
 		}),
 });
 
-export const collections = { blog };
+const panoramas = defineCollection({
+	loader: glob({ base: './src/content/panoramas', pattern: '**/*.{md,mdx}' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			tipo: z.enum(['Charla', 'Retiro', 'Concierto', 'Película', 'Taller', 'Encuentro', 'Otro']),
+			fecha: z.coerce.date(),
+			fechaFin: z.coerce.date().optional(),
+			hora: z.string().optional(),
+			lugar: z.string(),
+			organiza: z.string().optional(),
+			link: z.string().url().optional(),
+			heroImage: z.optional(image()),
+		}),
+});
+
+export const collections = { blog, panoramas };

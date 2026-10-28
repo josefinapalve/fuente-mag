@@ -1,0 +1,238 @@
+---
+import { Image } from 'astro:assets';
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+
+export async function getStaticPaths() {
+	const eventos = await getCollection('panoramas');
+	return eventos.map((evento) => ({
+		params: { slug: evento.id },
+		props: evento,
+	}));
+}
+type Props = CollectionEntry<'panoramas'>;
+
+const evento = Astro.props;
+const { Content } = await render(evento);
+const { title, description, tipo, fecha, fechaFin, hora, lugar, organiza, link, heroImage } = evento.data;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="evento">
+				<a href="/panoramas/" class="volver">← Todos los panoramas</a>
+
+				<header class="evento-header">
+					<span class="tipo">{tipo}</span>
+					<h1>{title}</h1>
+					<p class="lead">{description}</p>
+				</header>
+
+				{heroImage && (
+					<div class="hero">
+						<Image width={1200} height={600} src={heroImage} alt="" />
+					</div>
+				)}
+
+				<div class="contenido">
+					<aside class="datos">
+						<div class="dato">
+							<span class="etiqueta">Cuándo</span>
+							<span class="valor">
+								<FormattedDate date={fecha} />
+								{fechaFin && (
+									<>
+										{' '}— <FormattedDate date={fechaFin} />
+									</>
+								)}
+								{hora && <div class="hora">{hora}</div>}
+							</span>
+						</div>
+						<div class="dato">
+							<span class="etiqueta">Dónde</span>
+							<span class="valor">{lugar}</span>
+						</div>
+						{organiza && (
+							<div class="dato">
+								<span class="etiqueta">Organiza</span>
+								<span class="valor">{organiza}</span>
+							</div>
+						)}
+						{link && (
+							<div class="dato">
+								<a class="cta" href={link} target="_blank" rel="noopener noreferrer">
+									Más información →
+								</a>
+							</div>
+						)}
+					</aside>
+
+					<div class="prose">
+						<Content />
+					</div>
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.evento {
+		max-width: 960px;
+		margin: 0 auto;
+	}
+	.volver {
+		display: inline-block;
+		font-family: var(--font-body);
+		font-size: 0.85em;
+		color: rgb(var(--gray));
+		text-decoration: none;
+		margin-bottom: 2em;
+		transition: color 0.2s ease;
+	}
+	.volver:hover {
+		color: var(--accent);
+	}
+
+	.evento-header {
+		text-align: center;
+		margin-bottom: 2.5em;
+	}
+	.tipo {
+		display: inline-block;
+		font-family: var(--font-body);
+		font-size: 0.8em;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-mustard);
+		margin-bottom: 1em;
+	}
+	.evento-header h1 {
+		font-size: 2.6em;
+		margin: 0 0 0.5em;
+		line-height: 1.1;
+	}
+	.lead {
+		font-family: var(--font-body);
+		font-size: 1.1em;
+		color: rgb(var(--gray-dark));
+		max-width: 640px;
+		margin: 0 auto;
+		line-height: 1.5;
+	}
+
+	.hero {
+		margin-bottom: 3em;
+	}
+	.hero :global(img) {
+		width: 100%;
+		height: auto;
+		border-radius: 12px;
+		display: block;
+	}
+
+	.contenido {
+		display: grid;
+		grid-template-columns: 280px 1fr;
+		gap: 3em;
+		align-items: start;
+	}
+
+	.datos {
+		position: sticky;
+		top: 6em;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5em;
+		padding: 1.75em;
+		background: #f4f4f4;
+		border-radius: 12px;
+	}
+	.dato {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3em;
+	}
+	.etiqueta {
+		font-family: var(--font-body);
+		font-size: 0.7em;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: rgb(var(--gray));
+	}
+	.valor {
+		font-family: var(--font-body);
+		font-size: 0.95em;
+		color: rgb(var(--gray-dark));
+		line-height: 1.4;
+	}
+	.hora {
+		color: rgb(var(--gray));
+		font-size: 0.9em;
+		margin-top: 0.2em;
+	}
+	.cta {
+		display: inline-block;
+		font-family: var(--font-body);
+		font-size: 0.9em;
+		font-weight: 500;
+		color: var(--accent);
+		text-decoration: none;
+		padding: 0.6em 1em;
+		border: 1px solid var(--accent);
+		border-radius: 100px;
+		text-align: center;
+		transition: all 0.2s ease;
+	}
+	.cta:hover {
+		background: var(--accent);
+		color: var(--color-paper);
+	}
+
+	.prose {
+		font-size: 1em;
+		line-height: 1.7;
+		color: rgb(var(--gray-dark));
+	}
+	.prose :global(h2) {
+		font-size: 1.4em;
+		margin-top: 1.8em;
+		margin-bottom: 0.5em;
+	}
+	.prose :global(h3) {
+		font-size: 1.15em;
+		margin-top: 1.4em;
+	}
+	.prose :global(p) {
+		margin-bottom: 1.2em;
+	}
+
+	@media (max-width: 900px) {
+		.contenido {
+			grid-template-columns: 1fr;
+			gap: 2em;
+		}
+		.datos {
+			position: static;
+			order: 2;
+		}
+		.prose {
+			order: 1;
+		}
+		.evento-header h1 {
+			font-size: 2em;
+		}
+	}
+</style>
