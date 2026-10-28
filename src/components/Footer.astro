@@ -3,13 +3,50 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} FUENTE. Todos los derechos reservados.
+	<div class="footer-content">
+		<div class="social-links">
+			<a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+			</a>
+			<a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">
+				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+			</a>
+			<a href="https://open.spotify.com" target="_blank" rel="noopener" aria-label="Spotify">
+				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 11.973c2.5-1.473 5.5-.973 7.5.527"/><path d="M9 15c1.5-1 4-.5 5 .5"/><path d="M7 9c2-1.5 6-2 9 .5"/></svg>
+			</a>
+			<a href="https://tumblr.com" target="_blank" rel="noopener" aria-label="Tumblr">
+				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16c0 2.21-1.79 4-4 4h-1c-2.21 0-3-1.79-3-4v-5H8V8.5c2.39-.83 3-3 3.12-4.5H13v4h3v3h-3v4.5c0 .83.67 1.5 1.5 1.5H16"/></svg>
+			</a>
+		</div>
+		<p class="copyright">&copy; {today.getFullYear()} FUENTE. Todos los derechos reservados.</p>
+	</div>
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		padding: 3em 2em;
 		text-align: center;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.footer-content {
+		max-width: 960px;
+		margin: 0 auto;
+	}
+	.social-links {
+		display: flex;
+		justify-content: center;
+		gap: 1.5em;
+		margin-bottom: 1.5em;
+	}
+	.social-links a {
+		color: rgb(var(--gray));
+		transition: color 0.2s ease;
+	}
+	.social-links a:hover {
+		color: rgb(var(--black));
+	}
+	.copyright {
+		font-size: 0.8em;
+		color: rgb(var(--gray));
+		margin: 0;
 	}
 </style>
