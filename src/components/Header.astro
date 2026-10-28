@@ -19,8 +19,8 @@ import { SITE_TITLE } from '../consts';
 <style>
 	header {
 		padding: 1.25em 2.5em;
-		background: white;
-		border-bottom: 1px solid rgba(var(--gray-light), 0.7);
+		background: var(--color-paper);
+		border-bottom: 1px solid rgba(var(--gray), 0.25);
 		position: sticky;
 		top: 0;
 		z-index: 100;
@@ -33,12 +33,14 @@ import { SITE_TITLE } from '../consts';
 		margin: 0 auto;
 	}
 	.logo {
-		font-size: 1.5em;
-		font-weight: 700;
-		letter-spacing: 0.15em;
+		font-family: var(--font-script);
+		font-size: 2.2em;
+		font-weight: 400;
+		letter-spacing: 0;
 		text-decoration: none;
 		color: rgb(var(--black));
 		flex-shrink: 0;
+		line-height: 1;
 	}
 	.nav-right {
 		display: flex;
@@ -69,17 +71,17 @@ import { SITE_TITLE } from '../consts';
 	}
 	.search-wrapper input {
 		padding: 0.55em 1em 0.55em 2.3em;
-		border: 1px solid rgb(var(--gray-light));
+		border: 1px solid rgba(var(--gray), 0.3);
 		border-radius: 100px;
 		font-size: 0.85em;
 		width: 200px;
-		background: rgba(var(--gray-light), 0.3);
+		background: var(--color-cream);
 		transition: all 0.2s ease;
 		outline: none;
 	}
 	.search-wrapper input:focus {
 		border-color: rgb(var(--gray));
-		background: white;
+		background: var(--color-paper);
 		width: 260px;
 	}
 	@media (max-width: 768px) {

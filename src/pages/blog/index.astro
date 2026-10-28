@@ -32,11 +32,11 @@ const posts = (await getCollection('blog')).sort(
 								<Image width={400} height={300} src={post.data.heroImage} alt="" />
 							)}
 							<div class="article-info">
-								<h2>{post.data.title}</h2>
-								<p class="description">{post.data.description}</p>
 								<span class="date">
 									<FormattedDate date={post.data.pubDate} />
 								</span>
+								<h2>{post.data.title}</h2>
+								<p class="description">{post.data.description}</p>
 							</div>
 						</a>
 					))
@@ -84,16 +84,19 @@ const posts = (await getCollection('blog')).sort(
 		margin-bottom: 1em;
 	}
 	.article-info h2 {
+		font-family: var(--font-body);
+		font-weight: 600;
 		font-size: 1.15em;
 		margin: 0 0 0.4em;
-		line-height: 1.3;
+		line-height: 1.35;
+		letter-spacing: -0.005em;
 	}
 	.article-card:hover h2 {
-		color: var(--accent);
+		color: rgb(var(--black));
 	}
 	.description {
 		font-size: 0.85em;
-		color: rgb(var(--gray));
+		color: rgb(var(--black));
 		margin: 0 0 0.6em;
 		line-height: 1.5;
 		display: -webkit-box;
@@ -102,8 +105,18 @@ const posts = (await getCollection('blog')).sort(
 		overflow: hidden;
 	}
 	.date {
-		font-size: 0.78em;
-		color: rgb(var(--gray));
+		font-family: var(--font-script);
+		font-weight: 400;
+		font-size: 1.05em;
+		color: var(--color-ink-blue);
+		line-height: 1.4;
+		display: block;
+		margin-bottom: 0.4em;
+		overflow: visible;
+	}
+	.date :global(time) {
+		display: inline-block;
+		line-height: inherit;
 	}
 	@media (max-width: 1024px) {
 		.articles-grid {
