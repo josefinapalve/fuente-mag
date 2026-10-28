@@ -3,40 +3,52 @@
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	/* Paleta FUENTE — colores en hex para uso directo */
+	--color-ink: #000000;
+	--color-navy: #0e1749;
+	--color-paper: #f4f4f4;
+	--color-ink-blue: #13247c;
+	--color-cream: #ebe6e0;
+	--color-taupe: #a68b6b;
+	--color-terracotta: #af2d27;
+	--color-forest: #296647;
+	--color-mustard: #d4a017;
+	--color-rose: #d4907e;
+	--color-sage: #9db8a4;
+	--color-butter: #e5cfa0;
+
+	/* Tokens semánticos — RGB triplets para uso con rgb()/rgba() y opacidad */
+	--black: 0, 0, 0;             /* negro: titulares y texto fuerte */
+	--gray: 0, 0, 0;              /* negro: texto secundario, metadatos */
+	--gray-light: 235, 230, 224;  /* cream: bordes suaves, fondos secundarios */
+	--gray-dark: 0, 0, 0;         /* negro: cuerpo de texto */
+
+	/* Acentos */
+	--accent: #13247c;            /* azul tinta expresivo */
+	--accent-dark: #0e1749;       /* navy profundo */
+	--accent-warm: #af2d27;       /* terracota — etiquetas y categorías */
+
+	--gray-gradient: rgba(var(--gray-light), 50%), var(--color-paper);
 	--box-shadow:
 		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
 		0 16px 32px rgba(var(--gray), 33%);
 }
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+/* Familias tipográficas */
+:root {
+	--font-display: "Kaisei Tokumin", Georgia, serif;
+	--font-body: "Manrope", system-ui, -apple-system, sans-serif;
+	--font-script: "Kalam", cursive;
 }
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
+
 * {
 	box-sizing: border-box;
 }
 body {
-	font-family: "Atkinson", sans-serif;
+	font-family: var(--font-body);
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: #fff;
+	background: var(--color-paper);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
@@ -55,12 +67,16 @@ h3,
 h4,
 h5,
 h6 {
+	font-family: var(--font-display);
+	font-weight: 600;
 	margin: 0 0 0.5rem 0;
 	color: rgb(var(--black));
-	line-height: 1.2;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
 }
 h1 {
 	font-size: 3.052em;
+	font-weight: 700;
 }
 h2 {
 	font-size: 2.441em;
@@ -73,6 +89,12 @@ h4 {
 }
 h5 {
 	font-size: 1.25em;
+}
+
+/* Utility para usar la manuscrita en momentos íntimos */
+.script {
+	font-family: var(--font-script);
+	font-weight: 400;
 }
 strong,
 b {

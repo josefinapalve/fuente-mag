@@ -57,9 +57,9 @@ const [featuredPost, ...restPosts] = posts;
 								<Image width={400} height={300} src={post.data.heroImage} alt="" />
 							)}
 							<div class="article-info">
+								<span class="article-date"><FormattedDate date={post.data.pubDate} /></span>
 								<h3>{post.data.title}</h3>
 								<p class="article-description">{post.data.description}</p>
-								<span class="article-date"><FormattedDate date={post.data.pubDate} /></span>
 							</div>
 						</a>
 					))}
@@ -90,7 +90,7 @@ const [featuredPost, ...restPosts] = posts;
 			<section class="newsletter-section">
 				<div class="newsletter-inner">
 					<h2>No te pierdas nada</h2>
-					<p>Recibí nuestros artículos, playlists y recomendaciones directamente en tu mail.</p>
+					<p>Recibe nuestros artículos, playlists y recomendaciones directamente en tu correo.</p>
 					<form class="newsletter-form" onsubmit="event.preventDefault()">
 						<input type="email" placeholder="Tu email" aria-label="Tu email" required />
 						<button type="submit">Suscribirme</button>
@@ -140,10 +140,11 @@ const [featuredPost, ...restPosts] = posts;
 		background: linear-gradient(transparent, rgba(0,0,0,0.5));
 	}
 	.hero-label {
-		font-size: 0.75em;
-		text-transform: uppercase;
-		letter-spacing: 0.2em;
-		opacity: 0.8;
+		font-family: var(--font-script);
+		font-size: 1.05em;
+		opacity: 0.9;
+		display: inline-block;
+		margin-bottom: 0.2em;
 	}
 	.hero h1 {
 		color: white;
@@ -162,12 +163,13 @@ const [featuredPost, ...restPosts] = posts;
 
 	/* Section titles */
 	.section-title {
+		font-family: var(--font-body);
 		font-size: 1.1em;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		margin-bottom: 1.5em;
-		color: rgb(var(--gray));
-		font-weight: 700;
+		color: rgb(var(--black));
+		font-weight: 800;
 	}
 
 	/* Articles grid */
@@ -199,17 +201,20 @@ const [featuredPost, ...restPosts] = posts;
 		margin-bottom: 1em;
 	}
 	.article-info h3 {
+		font-family: var(--font-body);
+		font-weight: 600;
 		font-size: 1.15em;
 		margin: 0 0 0.4em;
-		line-height: 1.3;
+		line-height: 1.35;
+		letter-spacing: -0.005em;
 		color: rgb(var(--black));
 	}
 	.article-card:hover h3 {
-		color: var(--accent);
+		color: rgb(var(--black));
 	}
 	.article-description {
 		font-size: 0.85em;
-		color: rgb(var(--gray));
+		color: rgb(var(--black));
 		margin: 0 0 0.6em;
 		line-height: 1.5;
 		display: -webkit-box;
@@ -218,8 +223,18 @@ const [featuredPost, ...restPosts] = posts;
 		overflow: hidden;
 	}
 	.article-date {
-		font-size: 0.78em;
-		color: rgb(var(--gray));
+		font-family: var(--font-script);
+		font-weight: 400;
+		font-size: 1.05em;
+		color: var(--color-ink-blue);
+		line-height: 1.4;
+		display: block;
+		margin-bottom: 0.4em;
+		overflow: visible;
+	}
+	.article-date :global(time) {
+		display: inline-block;
+		line-height: inherit;
 	}
 
 	/* Playlist */
@@ -231,13 +246,15 @@ const [featuredPost, ...restPosts] = posts;
 		grid-template-columns: 1fr 1fr;
 		gap: 3em;
 		align-items: center;
-		background: rgba(var(--gray-light), 0.35);
+		background: var(--color-cream);
 		border-radius: 16px;
 		padding: 3em;
 	}
 	.playlist-text h3 {
-		font-size: 1.5em;
-		margin: 0 0 0.6em;
+		font-family: var(--font-script);
+		font-size: 2.4em;
+		margin: 0 0 0.4em;
+		font-weight: 400;
 	}
 	.playlist-text p {
 		color: rgb(var(--gray-dark));
@@ -263,14 +280,14 @@ const [featuredPost, ...restPosts] = posts;
 		width: 100%;
 		aspect-ratio: 1;
 		max-width: 300px;
-		background: rgba(var(--gray-light), 0.6);
+		background: var(--color-paper);
 		border-radius: 12px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: 0.8em;
-		color: rgb(var(--gray));
+		color: var(--color-taupe);
 		font-size: 0.85em;
 	}
 
