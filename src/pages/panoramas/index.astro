@@ -10,14 +10,23 @@ import { SITE_TITLE } from '../../consts';
 const now = new Date();
 now.setHours(0, 0, 0, 0);
 
-const eventos = (await getCollection('panoramas'))
+const todos = await getCollection('panoramas');
+
+const proximos = todos
 	.filter((e) => {
 		const fin = e.data.fechaFin ?? e.data.fecha;
 		return fin.valueOf() >= now.valueOf();
 	})
 	.sort((a, b) => a.data.fecha.valueOf() - b.data.fecha.valueOf());
 
-const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
+const pasados = todos
+	.filter((e) => {
+		const fin = e.data.fechaFin ?? e.data.fecha;
+		return fin.valueOf() < now.valueOf();
+	})
+	.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+
+const tiposPresentes = Array.from(new Set(todos.map((e) => e.data.tipo)));
 ---
 
 <!doctype html>
@@ -42,13 +51,13 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 				</div>
 			)}
 
-			{eventos.length === 0 ? (
+			{proximos.length === 0 ? (
 				<div class="vacio">
 					<p>No hay panoramas próximos por ahora. Vuelve pronto — siempre estamos sumando.</p>
 				</div>
 			) : (
-				<div class="eventos-grid" id="eventos-grid">
-					{eventos.map((evento) => (
+				<div class="eventos-grid">
+					{proximos.map((evento) => (
 						<a href={`/panoramas/${evento.id}/`} class="evento-card" data-tipo={evento.data.tipo}>
 							{evento.data.heroImage && (
 								<div class="evento-imagen">
@@ -70,6 +79,37 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 						</a>
 					))}
 				</div>
+			)}
+
+			{pasados.length > 0 && (
+				<section class="pasados-section">
+					<div class="pasados-header">
+						<h2>Panoramas pasados</h2>
+						<p>Lo que ya ocurrió, por si quieres saber de qué se trataba.</p>
+					</div>
+					<div class="eventos-grid pasados-grid">
+						{pasados.map((evento) => (
+							<a href={`/panoramas/${evento.id}/`} class="evento-card pasado" data-tipo={evento.data.tipo}>
+								{evento.data.heroImage && (
+									<div class="evento-imagen">
+										<Image width={400} height={300} src={evento.data.heroImage} alt="" />
+									</div>
+								)}
+								<div class="evento-info">
+									<span class="tipo">{evento.data.tipo}</span>
+									<h3>{evento.data.title}</h3>
+									<div class="meta">
+										<span class="fecha">
+											<FormattedDate date={evento.data.fecha} />
+										</span>
+										<span class="lugar">{evento.data.lugar}</span>
+									</div>
+									<p class="descripcion">{evento.data.description}</p>
+								</div>
+							</a>
+						))}
+					</div>
+				</section>
 			)}
 		</main>
 		<Footer />
@@ -164,6 +204,7 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		border-radius: 10px;
+		transition: filter 0.2s ease;
 	}
 	.tipo {
 		font-family: var(--font-body);
@@ -174,7 +215,8 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 		color: var(--color-mustard);
 		margin-bottom: 0.6em;
 	}
-	.evento-info h2 {
+	.evento-info h2,
+	.evento-info h3 {
 		font-family: var(--font-body);
 		font-weight: 600;
 		font-size: 1.15em;
@@ -182,7 +224,8 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 		line-height: 1.35;
 		letter-spacing: -0.005em;
 	}
-	.evento-card:hover h2 {
+	.evento-card:hover h2,
+	.evento-card:hover h3 {
 		color: var(--accent);
 	}
 	.meta {
@@ -218,6 +261,38 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 		color: rgb(var(--gray));
 	}
 
+	.pasados-section {
+		margin-top: 5em;
+		padding-top: 3em;
+		border-top: 1px solid rgba(var(--gray), 0.15);
+	}
+	.pasados-header {
+		margin-bottom: 2.5em;
+	}
+	.pasados-header h2 {
+		font-family: var(--font-display);
+		font-size: 1.7em;
+		margin: 0 0 0.3em;
+		color: rgb(var(--black));
+	}
+	.pasados-header p {
+		color: rgb(var(--gray));
+		font-size: 0.95em;
+		margin: 0;
+	}
+	.evento-card.pasado {
+		opacity: 0.7;
+	}
+	.evento-card.pasado:hover {
+		opacity: 1;
+	}
+	.evento-card.pasado :global(img) {
+		filter: grayscale(0.4);
+	}
+	.evento-card.pasado:hover :global(img) {
+		filter: grayscale(0);
+	}
+
 	@media (max-width: 1024px) {
 		.eventos-grid {
 			grid-template-columns: repeat(2, 1fr);
@@ -233,6 +308,9 @@ const tiposPresentes = Array.from(new Set(eventos.map((e) => e.data.tipo)));
 		}
 		.filtros {
 			margin-bottom: 2em;
+		}
+		.pasados-section {
+			margin-top: 4em;
 		}
 	}
 </style>
