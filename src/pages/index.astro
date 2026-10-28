@@ -8,6 +8,8 @@ import Header from '../components/Header.astro';
 import VersiculoDelDia from '../components/VersiculoDelDia.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdajwkeq';
+
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
@@ -90,14 +92,18 @@ const [featuredPost, ...restPosts] = posts;
 				</div>
 			</section>
 
-			<!-- Newsletter -->
-			<section class="newsletter-section reveal">
-				<div class="newsletter-inner">
-					<h2>No te pierdas nada</h2>
-					<p>Recibe nuestros artículos, playlists y recomendaciones directamente en tu correo.</p>
-					<form class="newsletter-form" onsubmit="event.preventDefault()">
-						<input type="email" placeholder="Tu email" aria-label="Tu email" required />
-						<button type="submit">Suscribirme</button>
+			<!-- Contacto rápido -->
+			<section class="contacto-home reveal">
+				<div class="contacto-home-inner">
+					<h2>Escríbenos</h2>
+					<p>Si algo de lo que publicamos te llegó, si quieres colaborar o recomendarnos un artista — leemos todo. Si quieres ver todas las formas de contacto, <a href="/contacto/">anda a la página de contacto</a>.</p>
+					<form class="contacto-home-form" action={FORMSPREE_ENDPOINT} method="POST">
+						<div class="contacto-home-row">
+							<input type="text" name="name" placeholder="Tu nombre" aria-label="Tu nombre" required />
+							<input type="email" name="email" placeholder="Tu email" aria-label="Tu email" required />
+						</div>
+						<textarea name="message" rows="3" placeholder="Tu mensaje" aria-label="Tu mensaje" required></textarea>
+						<button type="submit">Enviar mensaje</button>
 					</form>
 				</div>
 			</section>
@@ -340,62 +346,85 @@ const [featuredPost, ...restPosts] = posts;
 		font-size: 0.85em;
 	}
 
-	/* Newsletter — bloque oscuro */
-	.newsletter-section {
+	/* Contacto rápido — bloque oscuro */
+	.contacto-home {
 		background: rgb(var(--black));
 		margin: 5em -2.5em -3em;
 		padding: 5em 2.5em;
 		color: white;
 	}
-	.newsletter-inner {
-		max-width: 560px;
+	.contacto-home-inner {
+		max-width: 600px;
 		margin: 0 auto;
 		text-align: center;
 	}
-	.newsletter-inner h2 {
+	.contacto-home-inner h2 {
 		font-size: clamp(1.8em, 3.5vw, 2.6em);
 		margin: 0 0 0.4em;
 		color: white;
 	}
-	.newsletter-inner p {
+	.contacto-home-inner p {
 		color: rgba(255, 255, 255, 0.7);
 		font-size: 1em;
 		margin: 0 0 2em;
+		line-height: 1.6;
 	}
-	.newsletter-form {
+	.contacto-home-inner p a {
+		color: var(--color-butter);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.contacto-home-form {
 		display: flex;
-		gap: 0.6em;
+		flex-direction: column;
+		gap: 0.8em;
+		text-align: left;
 	}
-	.newsletter-form input {
+	.contacto-home-row {
+		display: flex;
+		gap: 0.8em;
+	}
+	.contacto-home-row > * {
 		flex: 1;
+		min-width: 0;
+	}
+	.contacto-home-form input,
+	.contacto-home-form textarea {
+		font-family: var(--font-body);
 		padding: 0.95em 1.3em;
 		border: 1px solid rgba(255, 255, 255, 0.25);
 		background: transparent;
 		color: white;
-		border-radius: 100px;
+		border-radius: 18px;
 		font-size: 0.95em;
 		outline: none;
 		transition: border-color 0.2s ease;
+		resize: vertical;
 	}
-	.newsletter-form input::placeholder {
+	.contacto-home-form input::placeholder,
+	.contacto-home-form textarea::placeholder {
 		color: rgba(255, 255, 255, 0.45);
 	}
-	.newsletter-form input:focus {
+	.contacto-home-form input:focus,
+	.contacto-home-form textarea:focus {
 		border-color: var(--color-butter);
 	}
-	.newsletter-form button {
-		padding: 0.95em 2em;
+	.contacto-home-form button {
+		align-self: center;
+		padding: 0.95em 2.4em;
+		margin-top: 0.4em;
 		background: var(--color-butter);
 		color: rgb(var(--black));
 		border: none;
 		border-radius: 100px;
+		font-family: var(--font-body);
 		font-size: 0.95em;
 		font-weight: 700;
 		cursor: pointer;
 		transition: transform 0.2s ease, background 0.2s ease;
 		white-space: nowrap;
 	}
-	.newsletter-form button:hover {
+	.contacto-home-form button:hover {
 		background: white;
 		transform: translateY(-2px);
 	}
@@ -424,7 +453,7 @@ const [featuredPost, ...restPosts] = posts;
 		.playlist-placeholder {
 			max-width: 200px;
 		}
-		.newsletter-form {
+		.contacto-home-row {
 			flex-direction: column;
 		}
 	}
