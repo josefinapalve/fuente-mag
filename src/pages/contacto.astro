@@ -1,0 +1,206 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdajwkeq';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead title={`Contacto — ${SITE_TITLE}`} description="Escríbenos. Para colaboraciones, recomendaciones o solo para saludar." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="contact-content">
+				<h1>Conversemos</h1>
+
+				<p class="lead">
+					Si algo de lo que publicamos te llegó, si quieres colaborar, recomendarnos un artista, sumarte al equipo o simplemente saludar — escríbenos. Leemos todo.
+				</p>
+
+				<form class="contact-form" action={FORMSPREE_ENDPOINT} method="POST">
+					<div class="form-row">
+						<label for="name">Tu nombre</label>
+						<input type="text" id="name" name="name" required />
+					</div>
+
+					<div class="form-row">
+						<label for="email">Tu email</label>
+						<input type="email" id="email" name="email" required />
+					</div>
+
+					<div class="form-row">
+						<label for="message">Tu mensaje</label>
+						<textarea id="message" name="message" rows="6" required></textarea>
+					</div>
+
+					<button type="submit">Enviar mensaje</button>
+				</form>
+
+				<div class="other-ways">
+					<span class="invite-eyebrow">También por Instagram</span>
+					<p class="other-text">Si prefieres algo más casual, escríbenos por DM. Lo revisamos seguido.</p>
+					<a href="https://www.instagram.com/fuentemag/" target="_blank" rel="noopener" class="other-link">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+						@fuentemag
+					</a>
+				</div>
+
+				<div class="contact-block">
+					<span class="block-label">Para colaboradores</span>
+					<p class="block-text">
+						¿Te gustaría escribir, ilustrar, fotografiar o aportar de alguna forma? Cuéntanos quién eres, qué haces y qué te mueve. Si calza con FUENTE, te respondemos.
+					</p>
+				</div>
+
+				<div class="contact-block">
+					<span class="block-label">Para artistas y músicos</span>
+					<p class="block-text">
+						Si tienes un proyecto que sientes que tiene que estar en FUENTE, envíanos el material y el contexto. Mientras más nos cuentes de la historia detrás, mejor.
+					</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	main {
+		width: 720px;
+		max-width: calc(100% - 2em);
+		margin: 0 auto;
+		padding: 2em 1em 4em;
+	}
+	h1 {
+		font-size: 2em;
+		margin-bottom: 0.5em;
+	}
+	.lead {
+		font-size: 1.15em;
+		line-height: 1.6;
+		margin-bottom: 2.5em;
+		color: rgb(var(--black));
+	}
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5em;
+		margin-bottom: 3em;
+	}
+	.form-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+	label {
+		font-family: var(--font-body);
+		font-size: 0.85em;
+		font-weight: 600;
+		color: rgb(var(--black));
+	}
+	input,
+	textarea {
+		font-family: var(--font-body);
+		font-size: 1em;
+		padding: 0.85em 1em;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 10px;
+		background: var(--color-paper);
+		color: rgb(var(--black));
+		outline: none;
+		transition: border-color 0.2s ease;
+		resize: vertical;
+	}
+	input:focus,
+	textarea:focus {
+		border-color: var(--color-ink-blue);
+	}
+	button {
+		align-self: flex-start;
+		padding: 0.9em 2.2em;
+		background: rgb(var(--black));
+		color: white;
+		border: none;
+		border-radius: 100px;
+		font-family: var(--font-body);
+		font-size: 0.95em;
+		font-weight: 600;
+		cursor: pointer;
+		transition: opacity 0.2s ease;
+	}
+	button:hover {
+		opacity: 0.85;
+	}
+
+	.other-ways {
+		background: var(--color-cream);
+		padding: 2em;
+		border-radius: 16px;
+		margin-bottom: 3em;
+	}
+	.invite-eyebrow {
+		font-family: var(--font-body);
+		font-size: 0.8em;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: rgb(var(--gray));
+		display: block;
+		margin-bottom: 1em;
+	}
+	.other-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.7em;
+		margin-bottom: 1em;
+	}
+	.other-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		text-decoration: none;
+		color: var(--color-ink-blue);
+		font-weight: 600;
+		font-size: 0.95em;
+		padding: 0.7em 1.3em;
+		background: var(--color-paper);
+		border-radius: 100px;
+		transition: background 0.2s ease;
+	}
+	.other-link:hover {
+		background: rgb(var(--gray-light));
+	}
+	.other-text {
+		margin: 0;
+		line-height: 1.5;
+		color: rgb(var(--gray-dark));
+		font-size: 0.9em;
+	}
+
+	.contact-block {
+		padding: 1.5em 0;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.contact-block:last-child {
+		border-bottom: 1px solid rgb(var(--gray-light));
+	}
+	.block-label {
+		font-family: var(--font-body);
+		font-size: 0.8em;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: rgb(var(--gray));
+		display: block;
+		margin-bottom: 0.5em;
+	}
+	.block-text {
+		margin: 0;
+		line-height: 1.65;
+		color: rgb(var(--black));
+	}
+</style>

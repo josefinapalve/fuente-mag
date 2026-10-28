@@ -1,0 +1,99 @@
+---
+import { getVersiculoDelDia } from '../data/versiculos';
+
+const hoy = new Date();
+const versiculo = getVersiculoDelDia(hoy);
+
+const dia = hoy.getDate();
+const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const fechaTexto = `${dia} de ${meses[hoy.getMonth()]}`;
+---
+
+<section class="versiculo-section">
+	<div class="versiculo-inner">
+		<div class="versiculo-meta">
+			<span class="versiculo-eyebrow">Versículo del día</span>
+			<span class="versiculo-fecha">{fechaTexto}</span>
+		</div>
+		<blockquote class="versiculo-texto">
+			<p>{versiculo.texto}</p>
+			<cite>— {versiculo.referencia}</cite>
+		</blockquote>
+	</div>
+</section>
+
+<style>
+	.versiculo-section {
+		background: var(--color-ink-blue);
+		padding: 5em 2em;
+		margin-top: 8em;
+		margin-bottom: 6em;
+		position: relative;
+	}
+	.versiculo-inner {
+		max-width: 1100px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 200px 1fr;
+		gap: 3em;
+		align-items: start;
+	}
+	.versiculo-meta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4em;
+		padding-top: 0.6em;
+	}
+	.versiculo-eyebrow {
+		font-family: var(--font-body);
+		font-size: 0.75em;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+		color: rgba(255, 255, 255, 0.55);
+		font-weight: 500;
+	}
+	.versiculo-fecha {
+		font-family: var(--font-display);
+		font-size: 1em;
+		color: var(--color-butter);
+		font-style: italic;
+	}
+	.versiculo-texto {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.versiculo-texto p {
+		font-family: var(--font-display);
+		font-size: clamp(1.6em, 3.2vw, 2.4em);
+		font-weight: 400;
+		line-height: 1.25;
+		color: var(--color-paper);
+		margin: 0 0 1.2em;
+		letter-spacing: -0.01em;
+	}
+	.versiculo-texto cite {
+		font-family: var(--font-body);
+		font-style: normal;
+		font-size: 0.85em;
+		color: var(--color-butter);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		font-weight: 500;
+	}
+	@media (max-width: 768px) {
+		.versiculo-section {
+			padding: 3.5em 1.5em;
+		}
+		.versiculo-inner {
+			grid-template-columns: 1fr;
+			gap: 1.5em;
+		}
+		.versiculo-meta {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			padding-top: 0;
+		}
+	}
+</style>

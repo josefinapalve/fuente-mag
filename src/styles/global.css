@@ -6,7 +6,7 @@
 	/* Paleta FUENTE — colores en hex para uso directo */
 	--color-ink: #000000;
 	--color-navy: #0e1749;
-	--color-paper: #f4f4f4;
+	--color-paper: #ffffff;
 	--color-ink-blue: #13247c;
 	--color-cream: #ebe6e0;
 	--color-taupe: #a68b6b;
@@ -35,8 +35,8 @@
 }
 /* Familias tipográficas */
 :root {
-	--font-display: "Kaisei Tokumin", Georgia, serif;
-	--font-body: "Manrope", system-ui, -apple-system, sans-serif;
+	--font-display: "Fraunces", Georgia, serif;
+	--font-body: "DM Sans", system-ui, -apple-system, sans-serif;
 	--font-script: "Kalam", cursive;
 }
 
@@ -45,6 +45,7 @@
 }
 body {
 	font-family: var(--font-body);
+	font-feature-settings: "ss01";
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -68,6 +69,7 @@ h4,
 h5,
 h6 {
 	font-family: var(--font-display);
+	font-feature-settings: "ss01";
 	font-weight: 600;
 	margin: 0 0 0.5rem 0;
 	color: rgb(var(--black));
@@ -155,6 +157,77 @@ hr {
 	}
 	main {
 		padding: 2em 1.25em;
+	}
+}
+
+/* Reveal animations al hacer scroll */
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: view()) {
+		.reveal {
+			animation: reveal-in linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 55%;
+		}
+		.reveal-soft {
+			animation: reveal-soft linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 45%;
+		}
+		.reveal-stagger > * {
+			animation: reveal-card linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 70%;
+		}
+		.reveal-stagger > *:nth-child(2) { animation-delay: 80ms; }
+		.reveal-stagger > *:nth-child(3) { animation-delay: 160ms; }
+		.reveal-stagger > *:nth-child(4) { animation-delay: 240ms; }
+		.reveal-stagger > *:nth-child(5) { animation-delay: 320ms; }
+		.reveal-stagger > *:nth-child(6) { animation-delay: 400ms; }
+		.reveal-stagger > *:nth-child(n+7) { animation-delay: 480ms; }
+
+		.parallax-slow {
+			animation: parallax-up linear;
+			animation-timeline: view();
+			animation-range: cover;
+		}
+	}
+}
+@keyframes reveal-in {
+	from {
+		opacity: 0;
+		transform: translateY(50px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+@keyframes reveal-soft {
+	from {
+		opacity: 0;
+		transform: scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@keyframes reveal-card {
+	from {
+		opacity: 0;
+		transform: translateY(60px) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+@keyframes parallax-up {
+	from {
+		transform: translateY(80px);
+	}
+	to {
+		transform: translateY(-80px);
 	}
 }
 
