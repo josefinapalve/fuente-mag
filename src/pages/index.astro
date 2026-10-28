@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import VersiculoDelDia from '../components/VersiculoDelDia.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const posts = (await getCollection('blog')).sort(
@@ -37,7 +38,7 @@ const [featuredPost, ...restPosts] = posts;
 							/>
 						)}
 						<div class="hero-overlay">
-							<span class="hero-label">Último artículo</span>
+							<span class="hero-label">{featuredPost.data.category || 'Último artículo'}</span>
 							<h1>{featuredPost.data.title}</h1>
 							<p class="hero-description">{featuredPost.data.description}</p>
 						</div>
@@ -46,17 +47,20 @@ const [featuredPost, ...restPosts] = posts;
 			</section>
 		)}
 
+		<div class="reveal-soft"><VersiculoDelDia /></div>
+
 		<main>
 			<!-- Todos los artículos en grilla -->
 			<section class="articles-section">
-				<h2 class="section-title">Artículos</h2>
-				<div class="articles-grid">
+				<h2 class="section-title reveal">Artículos</h2>
+				<div class="articles-grid reveal-stagger">
 					{posts.map((post) => (
 						<a href={`/blog/${post.id}/`} class="article-card">
 							{post.data.heroImage && (
 								<Image width={400} height={300} src={post.data.heroImage} alt="" />
 							)}
 							<div class="article-info">
+								{post.data.category && <span class="article-category">{post.data.category}</span>}
 								<span class="article-date"><FormattedDate date={post.data.pubDate} /></span>
 								<h3>{post.data.title}</h3>
 								<p class="article-description">{post.data.description}</p>
@@ -67,7 +71,7 @@ const [featuredPost, ...restPosts] = posts;
 			</section>
 
 			<!-- Playlist del mes -->
-			<section class="playlist-section">
+			<section class="playlist-section reveal">
 				<h2 class="section-title">Playlist del mes</h2>
 				<div class="playlist-card">
 					<div class="playlist-text">
@@ -87,7 +91,7 @@ const [featuredPost, ...restPosts] = posts;
 			</section>
 
 			<!-- Newsletter -->
-			<section class="newsletter-section">
+			<section class="newsletter-section reveal">
 				<div class="newsletter-inner">
 					<h2>No te pierdas nada</h2>
 					<p>Recibe nuestros artículos, playlists y recomendaciones directamente en tu correo.</p>
@@ -126,10 +130,35 @@ const [featuredPost, ...restPosts] = posts;
 		display: block;
 		border-radius: 0;
 		filter: brightness(0.65);
-		transition: filter 0.3s ease;
+		transition: filter 0.4s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+		animation: hero-zoom-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 	}
 	.hero-link:hover .hero-image {
 		filter: brightness(0.55);
+		transform: scale(1.02);
+	}
+	@keyframes hero-zoom-in {
+		from {
+			transform: scale(1.08);
+			filter: brightness(0.5);
+		}
+		to {
+			transform: scale(1);
+			filter: brightness(0.65);
+		}
+	}
+	.hero-overlay {
+		animation: hero-overlay-in 0.9s 0.3s ease-out both;
+	}
+	@keyframes hero-overlay-in {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 	.hero-overlay {
 		position: absolute;
@@ -137,10 +166,10 @@ const [featuredPost, ...restPosts] = posts;
 		left: 0;
 		right: 0;
 		padding: 4em 5%;
-		background: linear-gradient(transparent, rgba(0,0,0,0.5));
+		background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.15) 100%);
 	}
 	.hero-label {
-		font-family: var(--font-script);
+		font-family: var(--font-body);
 		font-size: 1.05em;
 		opacity: 0.9;
 		display: inline-block;
@@ -187,11 +216,7 @@ const [featuredPost, ...restPosts] = posts;
 		color: inherit;
 		display: flex;
 		flex-direction: column;
-		transition: transform 0.2s ease;
 		min-width: 0;
-	}
-	.article-card:hover {
-		transform: translateY(-4px);
 	}
 	.article-card :global(img) {
 		width: 100%;
@@ -199,6 +224,11 @@ const [featuredPost, ...restPosts] = posts;
 		object-fit: cover;
 		border-radius: 10px;
 		margin-bottom: 1em;
+		transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+	}
+	.article-card:hover :global(img) {
+		transform: scale(1.03);
+		filter: brightness(0.92) saturate(1.1);
 	}
 	.article-info h3 {
 		font-family: var(--font-body);
@@ -208,9 +238,10 @@ const [featuredPost, ...restPosts] = posts;
 		line-height: 1.35;
 		letter-spacing: -0.005em;
 		color: rgb(var(--black));
+		transition: color 0.2s ease;
 	}
 	.article-card:hover h3 {
-		color: rgb(var(--black));
+		color: var(--color-ink-blue);
 	}
 	.article-description {
 		font-size: 0.85em;
@@ -222,8 +253,18 @@ const [featuredPost, ...restPosts] = posts;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
+	.article-category {
+		font-family: var(--font-body);
+		font-size: 0.75em;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--accent-warm);
+		display: block;
+		margin-bottom: 0.3em;
+	}
 	.article-date {
-		font-family: var(--font-script);
+		font-family: var(--font-body);
 		font-weight: 400;
 		font-size: 1.05em;
 		color: var(--color-ink-blue);
@@ -237,39 +278,48 @@ const [featuredPost, ...restPosts] = posts;
 		line-height: inherit;
 	}
 
-	/* Playlist */
+	/* Playlist — bloque cálido */
 	.playlist-section {
 		margin-bottom: 5em;
 	}
 	.playlist-card {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1.2fr 1fr;
 		gap: 3em;
 		align-items: center;
-		background: var(--color-cream);
-		border-radius: 16px;
-		padding: 3em;
+		background: #f4f4f4;
+		padding: 3.5em;
+		color: rgb(var(--black));
+		border-radius: 24px;
 	}
 	.playlist-text h3 {
-		font-family: var(--font-script);
-		font-size: 2.4em;
+		font-family: var(--font-display);
+		font-size: clamp(2em, 4vw, 3em);
 		margin: 0 0 0.4em;
-		font-weight: 400;
+		font-weight: 500;
+		color: rgb(var(--black));
+		line-height: 1;
 	}
 	.playlist-text p {
 		color: rgb(var(--gray-dark));
-		font-size: 0.95em;
-		margin: 0 0 1.5em;
+		font-size: 1em;
+		margin: 0 0 1.8em;
 		line-height: 1.6;
 	}
 	.playlist-link {
-		color: var(--accent);
+		display: inline-block;
+		color: white;
+		background: var(--color-ink-blue);
+		padding: 0.8em 1.6em;
+		border-radius: 100px;
 		text-decoration: none;
 		font-weight: 700;
-		font-size: 0.95em;
+		font-size: 0.9em;
+		transition: transform 0.2s ease, background 0.2s ease;
 	}
 	.playlist-link:hover {
-		text-decoration: underline;
+		background: rgb(var(--black));
+		transform: translateY(-2px);
 	}
 	.playlist-visual {
 		display: flex;
@@ -279,36 +329,37 @@ const [featuredPost, ...restPosts] = posts;
 	.playlist-placeholder {
 		width: 100%;
 		aspect-ratio: 1;
-		max-width: 300px;
-		background: var(--color-paper);
-		border-radius: 12px;
+		max-width: 320px;
+		background: rgba(0, 0, 0, 0.1);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: 0.8em;
-		color: var(--color-taupe);
+		color: rgba(0, 0, 0, 0.6);
 		font-size: 0.85em;
 	}
 
-	/* Newsletter */
+	/* Newsletter — bloque oscuro */
 	.newsletter-section {
-		border-top: 1px solid rgb(var(--gray-light));
-		padding-top: 4em;
-		margin-bottom: 2em;
+		background: rgb(var(--black));
+		margin: 5em -2.5em -3em;
+		padding: 5em 2.5em;
+		color: white;
 	}
 	.newsletter-inner {
-		max-width: 500px;
+		max-width: 560px;
 		margin: 0 auto;
 		text-align: center;
 	}
 	.newsletter-inner h2 {
-		font-size: 1.8em;
+		font-size: clamp(1.8em, 3.5vw, 2.6em);
 		margin: 0 0 0.4em;
+		color: white;
 	}
 	.newsletter-inner p {
-		color: rgb(var(--gray));
-		font-size: 0.95em;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 1em;
 		margin: 0 0 2em;
 	}
 	.newsletter-form {
@@ -317,30 +368,36 @@ const [featuredPost, ...restPosts] = posts;
 	}
 	.newsletter-form input {
 		flex: 1;
-		padding: 0.85em 1.2em;
-		border: 1px solid rgb(var(--gray-light));
+		padding: 0.95em 1.3em;
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		background: transparent;
+		color: white;
 		border-radius: 100px;
-		font-size: 0.9em;
+		font-size: 0.95em;
 		outline: none;
 		transition: border-color 0.2s ease;
 	}
+	.newsletter-form input::placeholder {
+		color: rgba(255, 255, 255, 0.45);
+	}
 	.newsletter-form input:focus {
-		border-color: rgb(var(--gray));
+		border-color: var(--color-butter);
 	}
 	.newsletter-form button {
-		padding: 0.85em 2em;
-		background: rgb(var(--black));
-		color: white;
+		padding: 0.95em 2em;
+		background: var(--color-butter);
+		color: rgb(var(--black));
 		border: none;
 		border-radius: 100px;
-		font-size: 0.9em;
+		font-size: 0.95em;
 		font-weight: 700;
 		cursor: pointer;
-		transition: opacity 0.2s ease;
+		transition: transform 0.2s ease, background 0.2s ease;
 		white-space: nowrap;
 	}
 	.newsletter-form button:hover {
-		opacity: 0.8;
+		background: white;
+		transform: translateY(-2px);
 	}
 
 	@media (max-width: 1024px) {

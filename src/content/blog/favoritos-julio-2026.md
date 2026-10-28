@@ -1,6 +1,7 @@
 ---
 title: 'Favoritos de julio 2026'
 description: 'Lo mejor del mes en música, cine, literatura y radar. Nuestra curaduría mensual de lo que nos está moviendo.'
+category: 'Descubre'
 pubDate: 'Jul 01 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 ---

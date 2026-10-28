@@ -4,10 +4,13 @@ import { SITE_TITLE } from '../consts';
 
 <header>
 	<nav>
-		<a class="logo" href="/">{SITE_TITLE}</a>
+		<a class="logo" href="/" aria-label={SITE_TITLE}>
+			<img src="/logo.png" alt={SITE_TITLE} />
+		</a>
 		<div class="nav-right">
 			<a href="/blog/">Artículos</a>
-			<a href="/about/">Sobre nosotros</a>
+			<a href="/about/">Propósito</a>
+			<a href="/contacto/">Contacto</a>
 			<div class="search-wrapper">
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
 				<input type="search" placeholder="Buscar artículos..." aria-label="Buscar artículos" />
@@ -33,14 +36,16 @@ import { SITE_TITLE } from '../consts';
 		margin: 0 auto;
 	}
 	.logo {
-		font-family: var(--font-script);
-		font-size: 2.2em;
-		font-weight: 400;
-		letter-spacing: 0;
+		display: inline-flex;
+		align-items: center;
 		text-decoration: none;
-		color: rgb(var(--black));
 		flex-shrink: 0;
-		line-height: 1;
+		line-height: 0;
+	}
+	.logo img {
+		height: 48px;
+		width: auto;
+		display: block;
 	}
 	.nav-right {
 		display: flex;
@@ -88,8 +93,8 @@ import { SITE_TITLE } from '../consts';
 		header {
 			padding: 1em 1.25em;
 		}
-		.logo {
-			font-size: 1.2em;
+		.logo img {
+			height: 36px;
 		}
 		.nav-right {
 			gap: 1em;

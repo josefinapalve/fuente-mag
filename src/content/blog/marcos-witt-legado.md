@@ -1,6 +1,7 @@
 ---
 title: 'FUENTE FAVs: Legado, Marcos Witt.'
 description: '40 años de carrera, un Latin Grammy y un álbum que enseña a escuchar. Por qué Legado, de Marcos Witt, es nuestro favorito musical del mes.'
+category: 'Descubre'
 pubDate: 'Jul 06 2026'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---

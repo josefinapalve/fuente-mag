@@ -1,6 +1,7 @@
 ---
 title: 'Los Santos del Arte, Vol. I'
 description: 'Santa Cecilia, San Genesio y la pregunta que nos atraviesa: si fuimos creados para crear, ¿por qué nos cuesta tanto hacerlo?'
+category: 'Ensayos'
 pubDate: 'Jul 13 2026'
 heroImage: '../../assets/blog-placeholder-2.jpg'
 ---
